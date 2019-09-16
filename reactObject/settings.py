@@ -86,10 +86,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'reactperson',
-        'USER': 'zjp',
-        'PASSWORD': '12345678',
+        'USER': 'root',
+        'PASSWORD': '123456',
         'PORT':'3306',
-        'HOST': '39.105.177.234',
+        'HOST': 'localhost',
         #'HOST': '127.0.0.1',
 
     }
