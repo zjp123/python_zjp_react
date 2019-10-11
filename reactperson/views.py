@@ -15,8 +15,8 @@ class Login(View):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request):
         # print(9999)
-        isLogin = request.session.get('isLogin')
-        if isLogin:
+        username = request.COOKIES.get('username')
+        if username:
             return JsonResponse({'code': 200, 'message': '已登录', 'pathname': '/'})
         else:
             return HttpResponse()
@@ -24,6 +24,8 @@ class Login(View):
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         # 接收参数
+
+        print('zjp')
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -41,12 +43,19 @@ class Login(View):
         print(888)
         # print(user.id)
         if user:
-            request.session['username'] = username
-            request.session['isLogin'] = True
-            access_start = datetime.datetime.now()
-            access_start_str = access_start.strftime('%Y-%m-%d %H:%M:%S')
-            request.session['loginTime'] = access_start_str
-            return JsonResponse({'code': 200, 'message': '登录成功'})
+            # request.session['username'] = username
+            # request.session['isLogin'] = True
+            # access_start = datetime.datetime.now()
+            # access_start_str = access_start.strftime('%Y-%m-%d %H:%M:%S')
+            # request.session['loginTime'] = access_start_str
+
+            print('response')
+            response = HttpResponse({'code': 200, 'message': '登录成功'}, content_type="application/json")
+            response.set_cookie('username', username, max_age=1 * 24 * 3600)
+
+            return response
+
+            # return JsonResponse({'code': 200, 'message': '登录成功'})
         else:
             return JsonResponse({'code': 402, 'message': '用户名或密码错误'})
 

@@ -36,14 +36,20 @@ class TimeOutReloginMiddleware(object):
                 firstTime = datetime.datetime(a, b, c, d, e, f)
                 print((access_end - firstTime).seconds)
 
-                if (access_end - firstTime).seconds > 3600:
+                if (access_end - firstTime).seconds > 120:
                     request.session['isLogin'] = False
+                    access_start = datetime.datetime.now()
+                    access_start_str = access_start.strftime('%Y-%m-%d %H:%M:%S')
+                    request.session['loginTime'] = access_start_str
                     if request.path!='/login':
                         return JsonResponse({'code': 200, 'message': '请重新登录', 'pathname': '/login'})
+
                 else:
                     access_start = datetime.datetime.now()
                     access_start_str = access_start.strftime('%Y-%m-%d %H:%M:%S')
                     request.session['loginTime'] = access_start_str
+
+
         except Exception as e:
             print('rrr')
             print(request.session.get('loginTime'))
